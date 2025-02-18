@@ -24,7 +24,8 @@ public class LivroController {
         Livro livroSalvo = livroRepository.save(livro);
         return new ResponseEntity<>(livroSalvo,HttpStatus.CREATED);
     }
-
+    // @PathVariable localhost:8080/livros/1
+    // @RequestParam localhost:8080/livros/?id=1
     @GetMapping
     public ResponseEntity<List<Livro>> readLivros() {
         List<Livro> livros = livroRepository.findAll();
@@ -41,8 +42,13 @@ public class LivroController {
     }
 
     @PutMapping
-    public ResponseEntity<Livro> updateLivro(@RequestBody Livro livro) {
-        Livro livroSalvo = livroRepository.save(livro);
+    public ResponseEntity<Livro> createLivro(@RequestBody Livro livro, @PathVariable Long id) {
+        Optional<Livro> livroExistente = livroRepository.findById(id);
+        if (livroExistente.isEmpty()) {
+            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+        }
+        livro.setId(livroExistente.get().getId());
+        Livro livroSalvo = livroRepository.save(livroExistente.get());
         return new ResponseEntity<>(livroSalvo,HttpStatus.CREATED);
     }
 
