@@ -12,12 +12,9 @@ public class Livro {
     private Long id;
     private String titulo;
     private String autor;
-
     private int preco;
     private Categoria categoria;
     private String isbn;
-
-    public enum Categoria {A, B, C};
 
     public Long getId() {
         return id;
